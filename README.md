@@ -11,7 +11,7 @@ It uses SQL Server for product data and Redis to store unique 6-digit product ID
 
 1. **Clone the repository:**
    ```sh
-   git clone <your-repo-url>
+   git clone https://github.com/vasuklk/Product.git
    cd ProductAPI
    ```
 
