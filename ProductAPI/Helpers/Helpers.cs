@@ -2,7 +2,7 @@ using StackExchange.Redis;
 
 namespace ProductAPI.Helpers
 {
-    public class UniqueIdGenerator  : IUniqueIdGenerator
+    public class UniqueIdGenerator : IUniqueIdGenerator
     {
         private readonly IDatabase _redisDb;
         private const string RedisKey = "product_ids";
@@ -31,6 +31,11 @@ namespace ProductAPI.Helpers
 
             await _redisDb.SetAddAsync(RedisKey, id);
             return id;
+        }
+        
+        public bool IsValidId(int id)
+        {
+            return id >= 100000 && id < 1000000;
         }
     }
 }

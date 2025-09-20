@@ -3,6 +3,7 @@ using ProductAPI.Models;
 using ProductAPI.Repositories;
 using Microsoft.Extensions.Logging;
 using ProductAPI.Helpers;
+using System.ComponentModel;
 
 namespace ProductAPI.Controllers
 {
@@ -51,6 +52,11 @@ namespace ProductAPI.Controllers
             _logger.LogInformation("Creating a new product");
 
             int newId = await _idGenerator.GenerateUniqueIdAsync();
+            if (!_idGenerator.IsValidId(newId))  // Assuming IDs should be at least 6 digits
+            {
+                _logger.LogError("Unique id is more or less than 6 digits");
+                return StatusCode(500, "Unique id is more or less than 6 digits");
+            }
 
             var product = new Product
             {
@@ -69,6 +75,11 @@ namespace ProductAPI.Controllers
         public async Task<IActionResult> UpdateProduct(int id, ProductCreateDto dto)
         {
             _logger.LogInformation("Updating product with Id: {Id}", id);
+            if (!_idGenerator.IsValidId(id))  // Assuming IDs should be at least 6 digits
+            {
+                _logger.LogError("Unique id is more or less than 6 digits");
+                return StatusCode(500, "Unique id is more or less than 6 digits");
+            }
             var product = await _repository.GetByIdAsync(id);
             if (product == null)
             {
@@ -90,6 +101,11 @@ namespace ProductAPI.Controllers
         public async Task<IActionResult> DeleteProduct(int id)
         {
             _logger.LogInformation("Deleting product with Id: {Id}", id);
+            if (!_idGenerator.IsValidId(id))  // Assuming IDs should be at least 6 digits
+            {
+                _logger.LogError("Unique id is more or less than 6 digits");
+                return StatusCode(500, "Unique id is more or less than 6 digits");
+            }
             var product = await _repository.GetByIdAsync(id);
             if (product == null)
             {
@@ -106,6 +122,11 @@ namespace ProductAPI.Controllers
         public async Task<ActionResult<Product>> DecrementStock(int id, int quantity)
         {
             _logger.LogInformation("Decrementing stock for product Id: {Id} by {Quantity}", id, quantity);
+            if (!_idGenerator.IsValidId(id))  // Assuming IDs should be at least 6 digits
+            {
+                _logger.LogError("Unique id is more or less than 6 digits");
+                return StatusCode(500, "Unique id is more or less than 6 digits");
+            }
             var product = await _repository.GetByIdAsync(id);
             if (product == null)
             {
@@ -130,6 +151,11 @@ namespace ProductAPI.Controllers
         public async Task<ActionResult<Product>> IncrementStock(int id, int quantity)
         {
             _logger.LogInformation("Incrementing stock for product Id: {Id} by {Quantity}", id, quantity);
+            if (!(_idGenerator.IsValidId(id)))  // Assuming IDs should be at least 6 digits
+            {
+                _logger.LogError("Unique id is more or less than 6 digits");
+                return StatusCode(500, "Unique id is more or less than 6 digits");
+            }
             var product = await _repository.GetByIdAsync(id);
             if (product == null)
             {
